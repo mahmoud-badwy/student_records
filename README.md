@@ -23,8 +23,11 @@ This project implements a **Student Information System (SIS)** using a **Red-Bla
 student_records/
 ├── RBTree.h            # RBTree class with nested Student and Node classes
 ├── RBTree.cpp          # Implementation of all classes
-├── main.cpp            # Main application entry point
-├── CMakeLists.txt      # Build configuration
+├── main.cpp            # Console application entry point
+├── main_gui.cpp        # GUI application entry point (Qt)
+├── MainWindow.h        # GUI main window header
+├── MainWindow.cpp      # GUI main window implementation
+├── CMakeLists.txt      # Build configuration (supports both console & GUI)
 └── README.md           # This file
 ```
 
@@ -308,7 +311,72 @@ cmake --build .
 
 ---
 
-## 📝 Code Quality Features
+## �️ GUI Version (Qt)
+
+This project now includes a **graphical user interface** built with Qt6 Widgets!
+
+### Features
+- ✨ Modern, intuitive interface
+- 📊 Visual tree structure display
+- 📋 Table view of all students
+- 🔍 Real-time search and filtering
+- ➕ Easy add/delete operations
+- 📈 Range query visualization
+
+### Installing Qt6
+
+**Windows:**
+```bash
+# Download Qt Online Installer from https://www.qt.io/download-qt-installer
+# Install Qt 6.x with MinGW or MSVC compiler
+# Add Qt to PATH: C:\Qt\6.x.x\mingw_64\bin
+```
+
+**Linux:**
+```bash
+sudo apt-get install qt6-base-dev libqt6widgets6
+```
+
+**macOS:**
+```bash
+brew install qt@6
+```
+
+### Building the GUI Version
+
+```bash
+# Navigate to project directory
+cd student_records
+
+# Create build directory
+mkdir build
+cd build
+
+# Configure with CMake (Qt6 will be auto-detected)
+cmake ..
+
+# Build both console and GUI versions
+cmake --build .
+
+# Run GUI version
+./student_records_gui          # Linux/Mac
+student_records_gui.exe        # Windows
+
+# Run console version
+./student_records              # Linux/Mac
+student_records.exe            # Windows
+```
+
+### Disabling GUI Build
+
+If you don't want to build the GUI version:
+```bash
+cmake -DBUILD_GUI=OFF ..
+```
+
+---
+
+## �📝 Code Quality Features
 
 - **Const Correctness**: Getters marked `const`
 - **Memory Management**: Proper `new`/`delete` usage
