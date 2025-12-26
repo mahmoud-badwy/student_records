@@ -324,18 +324,42 @@ void MainWindow::clearForm() {
     idInput->setFocus();
 }
 
+void MainWindow::collectStudents(RBTree::Node* node, QList<RBTree::Student>& students) {
+    if (node == nullptr || node->getData().getId() == 0) {
+        return;
+    }
+    
+    // Inorder traversal: left -> current -> right (sorted by ID)
+    collectStudents(node->getLeft(), students);
+    students.append(node->getData());
+    collectStudents(node->getRight(), students);
+}
+
 void MainWindow::refreshStudentTable() {
     studentTable->setRowCount(0);
     
-    // Capture inorder output
-    std::stringstream ss;
-    std::streambuf* oldCout = std::cout.rdbuf(ss.rdbuf());
-    studentTree->inorder();
-    std::cout.rdbuf(oldCout);
+    // Collect all students from tree
+    QList<RBTree::Student> students;
+    collectStudents(studentTree->getRoot(), students);
     
-    // Note: This is a simplified approach. For better integration,
-    // you might want to add a method to RBTree that returns a vector of students
-    // For now, we'll show the tree structure when showing all students
+    // Populate table
+    studentTable->setRowCount(students.size());
+    
+    for (int i = 0; i < students.size(); ++i) {
+        const RBTree::Student& student = students[i];
+        
+        QTableWidgetItem* idItem = new QTableWidgetItem(QString::number(student.getId()));
+        QTableWidgetItem* nameItem = new QTableWidgetItem(QString::fromStdString(student.getName()));
+        QTableWidgetItem* deptItem = new QTableWidgetItem(QString::fromStdString(student.getDept()));
+        QTableWidgetItem* gpaItem = new QTableWidgetItem(QString::number(student.getGpa(), 'f', 2));
+        
+        studentTable->setItem(i, 0, idItem);
+        studentTable->setItem(i, 1, nameItem);
+        studentTable->setItem(i, 2, deptItem);
+        studentTable->setItem(i, 3, gpaItem);
+    }
+    
+    // Also update tree structure display
     showTreeStructure();
 }
 

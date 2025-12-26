@@ -33,6 +33,7 @@ private slots:
 private:
     void setupUI();
     void refreshStudentTable();
+    void collectStudents(RBTree::Node* node, QList<RBTree::Student>& students);
     QString getTreeStructure(RBTree::Node* node, const QString& indent, bool last);
     
     // Core data structure
